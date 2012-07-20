@@ -19,7 +19,7 @@ MikeDev9000.Widget = function(options){
 };
 
 MikeDev9000.Widget.prototype.add = function(options){
-	this.children.push(new Widget(options));
+	this.children.push(new MikeDev9000.Widget(options));
 };
 
 MikeDev9000.Widget.prototype.load = function(){
@@ -36,10 +36,10 @@ MikeDev9000.Widget.prototype.load = function(){
 	}
 };
 
-MikeDev9000.Widget.top = new Widget({
+MikeDev9000.Widget.top = new MikeDev9000.Widget({
 	element: jQuery(document)
 });
 
 jQuery(document).ready(function($){
-	Widget.top.load();
+	MikeDev9000.Widget.top.load();
 });
