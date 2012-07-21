@@ -9,11 +9,20 @@
 <script type="text/javascript" src="/js/mikedev9000.js"></script>
 </head>
 <body>
+
 <div id="widget1">TEST</div>
+
+<div id="person-form-widget"></div>
+
 <script type="text/javascript">
-MikeDev9000.Widget.top.add({
+MikeDev9000.WidgetManager.addWidget({
 	element: jQuery('#widget1'),
 	url: '/widget.html'
+});
+
+MikeDev9000.WidgetManager.addWidget({
+	element: jQuery('#person-form-widget'),
+	url: '/person-form.php'
 });
 </script>
 </body>

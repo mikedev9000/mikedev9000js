@@ -1,45 +1,72 @@
 
 var MikeDev9000 = {};
 
-MikeDev9000.Widget = function(options){
+//holds all of the widgets and managers activities between them
+MikeDev9000.WidgetManager = {	
+	widgets: [],
 	
-	// Holds an array of widgets contained in the current widget
-	this.children = [];
+	addWidget: function(options){
+		MikeDev9000.WidgetManager.widgets.push(new MikeDev9000.Widget(options));	
+	},
+	
+	loadAll: function(){
+		for(i = 0; i < MikeDev9000.WidgetManager.widgets.length; i++){
+			MikeDev9000.WidgetManager.widgets[i].load();
+		}
+	}
+};
+
+MikeDev9000.Widget = function(options){
 	
 	this.url = null;
 	
-	// Called within the complete function after .load is completed and Widget.loadComplete() finishes
-	this.loadComplete = function(responseText, textStatus, XMLHttpRequest){};
+	this.element = null;
 	
 	jQuery.extend(this, options);
 	
-	if(typeof(this.element) == 'undefined'){
+	if(this.element == null){
 		alert('element must be defined in the options provided to new Widget()');
 	}
+	
+	this.element.addClass('mikedev9000-widget');
 };
 
-MikeDev9000.Widget.prototype.add = function(options){
-	this.children.push(new MikeDev9000.Widget(options));
-};
-
-MikeDev9000.Widget.prototype.load = function(){
+MikeDev9000.Widget.prototype.load = function(data){
 	var widgetInstance = this;
 	
-	if( this.url != null){	
-		this.element.load(this.url, function(responseText, textStatus, XMLHttpRequest){
-			widgetInstance.loadComplete(responseText, textStatus, XMLHttpRequest);
-		});
+	if( MikeDev9000.WidgetManager.loadCalls > 15 ){
+		return;
 	}
 	
-	for(i = 0; i < widgetInstance.children.length; i++){
-		widgetInstance.children[i].load();
+	widgetInstance.element.addClass('widget-loading');
+	
+	var complete = function(responseText, textStatus, XMLHttpRequest){
+		
+		widgetInstance.element.find('form').submit(function(event){
+			if(!jQuery(this).hasClass('widget-no-load')){
+				event.preventDefault();					
+				widgetInstance.load(jQuery(this).serializeArray());
+			}
+		});
+		
+		widgetInstance.element.find('a').click(function(event){
+			if(!jQuery(this).hasClass('widget-no-load')){
+				event.preventDefault();					
+				widgetInstance.load();
+			}
+		});
+		
+		widgetInstance.element.removeClass('widget-loading');
+	};
+	
+	if( typeof(data) == 'undefined' ){
+		this.element.load(this.url, complete);
+	}
+	else{
+		this.element.load(this.url, data, complete);
 	}
 };
 
-MikeDev9000.Widget.top = new MikeDev9000.Widget({
-	element: jQuery(document)
-});
-
-jQuery(document).ready(function($){
-	MikeDev9000.Widget.top.load();
+jQuery(window).load(function($){
+	MikeDev9000.WidgetManager.loadAll();
 });
