@@ -33,6 +33,12 @@ var peopleWidget = MikeDev9000.WidgetManager.addWidget({
 	element: jQuery('#all-people-widget'),
 	url: '/all-people.php'
 });
+
+
+//set up the form submit event handler so that it updates the peopleWidget
+personFormWidget.eventHandlers.form.submit = function(responseText, textStatus, XMLHttpRequest){
+	peopleWidget.load();
+};
 </script>
 </body>
 </html>

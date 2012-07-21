@@ -17,7 +17,11 @@ MikeDev9000.WidgetManager = {
 	 * and adds it to WidgetManager.widgets
 	 */
 	addWidget: function(options){
-		MikeDev9000.WidgetManager.widgets.push(new MikeDev9000.Widget(options));	
+		var widget = new MikeDev9000.Widget(options);
+	
+		MikeDev9000.WidgetManager.widgets.push(widget);
+		
+		return widget;
 	},
 	
 	/**
@@ -47,6 +51,12 @@ MikeDev9000.Widget = function(options){
 		alert('element must be defined in the options provided to new Widget()');
 	}
 	
+	this.eventHandlers = {
+		form: {
+			submit: function(responseText, textStatus, XMLHttpRequest){}
+		}
+	};
+	
 	this.element.addClass('mikedev9000-widget');
 };
 
@@ -66,6 +76,8 @@ MikeDev9000.Widget.prototype.load = function(data){
 			if(!jQuery(this).hasClass('widget-no-load')){
 				event.preventDefault();					
 				widgetInstance.load(jQuery(this).serializeArray());
+				
+				widgetInstance.eventHandlers.form.submit(responseText, textStatus, XMLHttpRequest);
 			}
 		});
 		
