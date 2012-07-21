@@ -3,26 +3,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Test widgets page</title>
-<link rel="stylesheet/less" type="text/css" href="/less/mikedev9000.widget.less">
+<link rel="stylesheet/less" type="text/css" href="/less/test.less">
+<link rel="stylesheet/less" type="text/css" href="/mikedev9000js/less/mikedev9000.widget.less">
+
 <script type="text/javascript" src="/js/less-1.3.0.js"></script>
 <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="/js/mikedev9000.js"></script>
+<script type="text/javascript" src="/mikedev9000js/js/mikedev9000.js"></script>
 </head>
 <body>
 
-<div id="widget1">TEST</div>
+<div id="menu-widget">Loading Menu</div>
 
 <div id="person-form-widget"></div>
 
+<div id="all-people-widget"></div>
+
 <script type="text/javascript">
-MikeDev9000.WidgetManager.addWidget({
-	element: jQuery('#widget1'),
-	url: '/widget.html'
+var menuWidget = MikeDev9000.WidgetManager.addWidget({
+	element: jQuery('#menu-widget'),
+	url: '/menu.html'
 });
 
-MikeDev9000.WidgetManager.addWidget({
+var personFormWidget = MikeDev9000.WidgetManager.addWidget({
 	element: jQuery('#person-form-widget'),
 	url: '/person-form.php'
+});
+
+var peopleWidget = MikeDev9000.WidgetManager.addWidget({
+	element: jQuery('#all-people-widget'),
+	url: '/all-people.php'
 });
 </script>
 </body>
